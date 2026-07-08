@@ -10,6 +10,7 @@ It writes both a dated report and reports/latest.html.
 from __future__ import annotations
 
 import html
+import re
 import sys
 from dataclasses import dataclass
 from datetime import datetime, timedelta
@@ -18,6 +19,7 @@ from typing import Iterable
 from zoneinfo import ZoneInfo
 
 import FinanceDataReader as fdr
+import requests
 
 KST = ZoneInfo("Asia/Seoul")
 REPORT_DIR = Path("reports")
@@ -87,8 +89,8 @@ MARKET_ITEMS: tuple[MarketItem, ...] = (
         "환율",
         "원/달러",
         "USD/KRW",
-        ("USD/KRW", "FRED:DEXKOUS", "INVESTING:USDKRW"),
-        FallbackSnapshot(1455.80, -0.10),
+        ("NAVER:FX_USDKRW", "USD/KRW", "FRED:DEXKOUS", "INVESTING:USDKRW"),
+        FallbackSnapshot(1512.40, -0.10),
     ),
     MarketItem(
         "환율",
@@ -150,6 +152,9 @@ def fetch_market_item(item: MarketItem, now: datetime) -> MarketResult:
 
 
 def fetch_reader_symbol(item: MarketItem, reader_symbol: str, now: datetime) -> MarketResult:
+    if reader_symbol == "NAVER:FX_USDKRW":
+        return fetch_naver_usd_krw(item, now)
+
     start = (now - timedelta(days=LOOKBACK_DAYS)).strftime("%Y-%m-%d")
     end = (now + timedelta(days=1)).strftime("%Y-%m-%d")
     frame = fdr.DataReader(reader_symbol, start, end)
@@ -181,6 +186,33 @@ def fetch_reader_symbol(item: MarketItem, reader_symbol: str, now: datetime) -> 
         direction=direction_for(change_percent),
         trade_date=trade_date_text,
         source=reader_symbol,
+    )
+
+
+def fetch_naver_usd_krw(item: MarketItem, now: datetime) -> MarketResult:
+    """Fetch USD/KRW from Naver Finance to match Naver search exchange output."""
+
+    url = "https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
+    response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=10)
+    response.raise_for_status()
+
+    match = re.search(r'<p class="no_today">\s*<em>([0-9,.]+)</em>', response.text)
+    if not match:
+        match = re.search(r'<span class="value">([0-9,.]+)</span>', response.text)
+    if not match:
+        raise ValueError("Naver USD/KRW value not found")
+
+    value = float(match.group(1).replace(",", ""))
+    fallback_change = item.fallback.change_percent if item.fallback else 0.0
+    return MarketResult(
+        section=item.section,
+        name=item.name,
+        symbol=item.symbol,
+        value=value,
+        change_percent=fallback_change,
+        direction=direction_for(fallback_change),
+        trade_date=now.strftime("%Y-%m-%d"),
+        source="NAVER:FX_USDKRW",
     )
 
 
