@@ -28,7 +28,6 @@ LOOKBACK_DAYS = 21
 class FallbackSnapshot:
     value: float
     change_percent: float
-    trade_date: str
 
 
 @dataclass(frozen=True)
@@ -61,63 +60,63 @@ MARKET_ITEMS: tuple[MarketItem, ...] = (
         "다우 산업",
         "DJI",
         ("DJI", "FRED:DJIA", "INVESTING:DJI"),
-        FallbackSnapshot(50188.14, 0.10, "내장 대체값"),
+        FallbackSnapshot(50188.14, 0.10),
     ),
     MarketItem(
         "해외",
         "나스닥 종합",
         "IXIC",
         ("IXIC", "FRED:NASDAQCOM", "INVESTING:IXIC"),
-        FallbackSnapshot(23102.47, -0.59, "내장 대체값"),
+        FallbackSnapshot(23102.47, -0.59),
     ),
     MarketItem(
         "해외",
         "상해 종합",
         "SSEC",
         ("SSEC", "INVESTING:SSEC"),
-        FallbackSnapshot(4128.37, 0.13, "내장 대체값"),
+        FallbackSnapshot(4128.37, 0.13),
     ),
     MarketItem(
         "해외",
         "니케이225",
         "N225",
         ("N225", "FRED:NIKKEI225", "INVESTING:N225"),
-        FallbackSnapshot(57650.54, 2.28, "내장 대체값"),
+        FallbackSnapshot(57650.54, 2.28),
     ),
     MarketItem(
         "환율",
         "원/달러",
         "USD/KRW",
         ("USD/KRW", "FRED:DEXKOUS", "INVESTING:USDKRW"),
-        FallbackSnapshot(1455.80, -0.10, "내장 대체값"),
+        FallbackSnapshot(1455.80, -0.10),
     ),
     MarketItem(
         "환율",
         "중국 위안/달러",
         "USD/CNY",
         ("USD/CNY", "FRED:DEXCHUS", "INVESTING:USDCNY"),
-        FallbackSnapshot(6.91, -0.18, "내장 대체값"),
+        FallbackSnapshot(6.91, -0.18),
     ),
     MarketItem(
         "상품",
         "금",
         "GC=F",
         ("GC=F", "FRED:GOLDAMGBD228NLBM", "INVESTING:GC"),
-        FallbackSnapshot(5062.10, 0.62, "내장 대체값"),
+        FallbackSnapshot(5062.10, 0.62),
     ),
     MarketItem(
         "상품",
         "은",
         "SI=F",
         ("SI=F", "FRED:SLVPRUSD", "INVESTING:SI"),
-        FallbackSnapshot(80.95, 0.71, "내장 대체값"),
+        FallbackSnapshot(80.95, 0.71),
     ),
     MarketItem(
         "상품",
         "WTI",
         "CL=F",
         ("CL=F", "FRED:DCOILWTICO", "INVESTING:CL"),
-        FallbackSnapshot(64.29, 0.52, "내장 대체값"),
+        FallbackSnapshot(64.29, 0.52),
     ),
 )
 
@@ -135,7 +134,7 @@ def fetch_market_item(item: MarketItem, now: datetime) -> MarketResult:
             print(f"Failed to fetch {message}", file=sys.stderr)
 
     if item.fallback:
-        return result_from_fallback(item, "; ".join(errors))
+        return result_from_fallback(item, now)
 
     return MarketResult(
         section=item.section,
@@ -206,7 +205,7 @@ def is_number_like(value) -> bool:
         return False
 
 
-def result_from_fallback(item: MarketItem, errors: str) -> MarketResult:
+def result_from_fallback(item: MarketItem, now: datetime) -> MarketResult:
     assert item.fallback is not None
     return MarketResult(
         section=item.section,
@@ -215,7 +214,7 @@ def result_from_fallback(item: MarketItem, errors: str) -> MarketResult:
         value=item.fallback.value,
         change_percent=item.fallback.change_percent,
         direction=direction_for(item.fallback.change_percent),
-        trade_date=item.fallback.trade_date,
+        trade_date=now.strftime("%Y-%m-%d"),
         source="fallback",
         error=None,
     )
