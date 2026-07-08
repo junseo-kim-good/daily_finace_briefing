@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>전일 시장 요약</title>
+  <style>
+    :root {
+      --text: #2f3437;
+      --muted: #7b858f;
+      --border: #e5e7eb;
+      --section-border: #b8bec5;
+      --up: #c66b5f;
+      --down: #4f91b8;
+      --flat: #6b7280;
+      --bg: #ffffff;
+    }
+    body {
+      margin: 0;
+      background: #f6f7f9;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
+    }
+    main {
+      width: min(100% - 32px, 480px);
+      margin: 0 auto;
+      padding: 28px 0 40px;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 24px;
+      font-weight: 800;
+    }
+    .generated-at {
+      margin: 0 0 28px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .market-section { margin-top: 26px; }
+    .market-section h2 {
+      margin: 0;
+      padding-bottom: 9px;
+      border-bottom: 2px solid var(--section-border);
+      font-size: 18px;
+      font-weight: 800;
+    }
+    .market-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      background: var(--bg);
+      border-left: 1px solid var(--border);
+    }
+    .market-card {
+      min-height: 104px;
+      padding: 14px 10px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      box-sizing: border-box;
+    }
+    .market-card h3 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      font-weight: 800;
+    }
+    .value {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .change {
+      margin-top: 2px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .up .value, .up .change { color: var(--up); }
+    .down .value, .down .change { color: var(--down); }
+    .flat .value, .flat .change { color: var(--flat); }
+    .error .value, .error .change { color: var(--muted); }
+    .meta {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+    .error {
+      margin-top: 6px;
+      color: #b45309;
+      font-size: 11px;
+      word-break: keep-all;
+    }
+    @media (max-width: 380px) {
+      .market-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>전일 시장 요약</h1>
+    <p class="generated-at">생성 시각: 2026-07-08 17:38:23 KST</p>
+    <section class="market-section">
+              <h2>국내</h2>
+              <div class="market-grid">
+                <article class="market-card down">
+                  <h3>코스피</h3>
+                  <div class="value">7,246.79</div>
+                  <div class="change">▼ 5.35%</div>
+                  <div class="meta">KS11 · 기준일 2026-07-08</div>
+                  
+                </article><article class="market-card down">
+                  <h3>코스닥</h3>
+                  <div class="value">785.00</div>
+                  <div class="change">▼ 5.56%</div>
+                  <div class="meta">KQ11 · 기준일 2026-07-08</div>
+                  
+                </article>
+              </div>
+            </section><section class="market-section">
+              <h2>해외</h2>
+              <div class="market-grid">
+                <article class="market-card error">
+                  <h3>다우 산업</h3>
+                  <div class="value">데이터 없음</div>
+                  <div class="change"></div>
+                  <div class="meta">DJI · 기준일 -</div>
+                  <div class='error'>HTTPSConnectionPool(host=&#x27;query2.finance.yahoo.com&#x27;, port=443): Max retries exceeded with url: /v8/finance/chart/%5EDJI?period1=1782259200&amp;period2=1783555200&amp;interval=1d&amp;includeAdjustedClose=true (Caused by ProxyError(&#x27;Unable to connect to proxy&#x27;, OSError(&#x27;Tunnel connection failed: 403 Forbidden&#x27;)))</div>
+                </article><article class="market-card error">
+                  <h3>나스닥 종합</h3>
+                  <div class="value">데이터 없음</div>
+                  <div class="change"></div>
+                  <div class="meta">IXIC · 기준일 -</div>
+                  <div class='error'>HTTPSConnectionPool(host=&#x27;query2.finance.yahoo.com&#x27;, port=443): Max retries exceeded with url: /v8/finance/chart/%5EIXIC?period1=1782259200&amp;period2=1783555200&amp;interval=1d&amp;includeAdjustedClose=true (Caused by ProxyError(&#x27;Unable to connect to proxy&#x27;, OSError(&#x27;Tunnel connection failed: 403 Forbidden&#x27;)))</div>
+                </article><article class="market-card error">
+                  <h3>상해 종합</h3>
+                  <div class="value">데이터 없음</div>
+                  <div class="change"></div>
+                  <div class="meta">SSEC · 기준일 -</div>
+                  <div class='error'>HTTPSConnectionPool(host=&#x27;query2.finance.yahoo.com&#x27;, port=443): Max retries exceeded with url: /v8/finance/chart/000001.SS?period1=1782259200&amp;period2=1783555200&amp;interval=1d&amp;includeAdjustedClose=true (Caused by ProxyError(&#x27;Unable to connect to proxy&#x27;, OSError(&#x27;Tunnel connection failed: 403 Forbidden&#x27;)))</div>
+                </article><article class="market-card error">
+                  <h3>니케이225</h3>
+                  <div class="value">데이터 없음</div>
+                  <div class="change"></div>
+                  <div class="meta">N225 · 기준일 -</div>
+                  <div class='error'>HTTPSConnectionPool(host=&#x27;query2.finance.yahoo.com&#x27;, port=443): Max retries exceeded with url: /v8/finance/chart/%5EN225?period1=1782259200&amp;period2=1783555200&amp;interval=1d&amp;includeAdjustedClose=true (Caused by ProxyError(&#x27;Unable to connect to proxy&#x27;, OSError(&#x27;Tunnel connection failed: 403 Forbidden&#x27;)))</div>
+                </article>
+              </div>
+            </section><section class="market-section">
+              <h2>환율</h2>
+              <div class="market-grid">
+                <article class="market-card error">
+                  <h3>원/달러</h3>
+                  <div class="value">데이터 없음</div>
+                  <div class="change"></div>
+                  <div class="meta">USD/KRW · 기준일 -</div>
+                  <div class='error'>HTTPSConnectionPool(host=&#x27;query2.finance.yahoo.com&#x27;, port=443): Max retries exceeded with url: /v8/finance/chart/KRW=X?period1=1782259200&amp;period2=1783555200&amp;interval=1d&amp;includeAdjustedClose=true (Caused by ProxyError(&#x27;Unable to connect to proxy&#x27;, OSError(&#x27;Tunnel connection failed: 403 Forbidden&#x27;)))</div>
+                </article><article class="market-card error">
+                  <h3>중국 위안/달러</h3>
+                  <div class="value">데이터 없음</div>
+                  <div class="change"></div>
+                  <div class="meta">USD/CNY · 기준일 -</div>
+                  <div class='error'>HTTPSConnectionPool(host=&#x27;query2.finance.yahoo.com&#x27;, port=443): Max retries exceeded with url: /v8/finance/chart/CNY=X?period1=1782259200&amp;period2=1783555200&amp;interval=1d&amp;includeAdjustedClose=true (Caused by ProxyError(&#x27;Unable to connect to proxy&#x27;, OSError(&#x27;Tunnel connection failed: 403 Forbidden&#x27;)))</div>
+                </article>
+              </div>
+            </section><section class="market-section">
+              <h2>상품</h2>
+              <div class="market-grid">
+                <article class="market-card error">
+                  <h3>금</h3>
+                  <div class="value">데이터 없음</div>
+                  <div class="change"></div>
+                  <div class="meta">GC=F · 기준일 -</div>
+                  <div class='error'>HTTPSConnectionPool(host=&#x27;query2.finance.yahoo.com&#x27;, port=443): Max retries exceeded with url: /v8/finance/chart/GC=F?period1=1782259200&amp;period2=1783555200&amp;interval=1d&amp;includeAdjustedClose=true (Caused by ProxyError(&#x27;Unable to connect to proxy&#x27;, OSError(&#x27;Tunnel connection failed: 403 Forbidden&#x27;)))</div>
+                </article><article class="market-card error">
+                  <h3>은</h3>
+                  <div class="value">데이터 없음</div>
+                  <div class="change"></div>
+                  <div class="meta">SI=F · 기준일 -</div>
+                  <div class='error'>HTTPSConnectionPool(host=&#x27;query2.finance.yahoo.com&#x27;, port=443): Max retries exceeded with url: /v8/finance/chart/SI=F?period1=1782259200&amp;period2=1783555200&amp;interval=1d&amp;includeAdjustedClose=true (Caused by ProxyError(&#x27;Unable to connect to proxy&#x27;, OSError(&#x27;Tunnel connection failed: 403 Forbidden&#x27;)))</div>
+                </article><article class="market-card error">
+                  <h3>WTI</h3>
+                  <div class="value">데이터 없음</div>
+                  <div class="change"></div>
+                  <div class="meta">CL=F · 기준일 -</div>
+                  <div class='error'>HTTPSConnectionPool(host=&#x27;query2.finance.yahoo.com&#x27;, port=443): Max retries exceeded with url: /v8/finance/chart/CL=F?period1=1782259200&amp;period2=1783555200&amp;interval=1d&amp;includeAdjustedClose=true (Caused by ProxyError(&#x27;Unable to connect to proxy&#x27;, OSError(&#x27;Tunnel connection failed: 403 Forbidden&#x27;)))</div>
+                </article>
+              </div>
+            </section>
+  </main>
+</body>
+</html>
